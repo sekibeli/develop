@@ -5,12 +5,18 @@ body {
     background-color: rgb(242, 241, 241);
 }
 
+#main {
+display: flex;
+}
+
 .d-none {
     display: none;
 }
 .container-fluit {
     margin: 20px;
     background-color: rgb(242, 241, 241);
+    display: flex;
+
 }
 
 #newProject {
