@@ -1,9 +1,9 @@
 const beginn = new Date("2023-01-11");
 let projects = [];
-let titel;
-let description;
-let startDate;
-let firstSubmission;
+// let titel;
+// let description;
+// let startDate;
+// let firstSubmission;
 
  
 async function init() {
@@ -13,7 +13,14 @@ async function init() {
     console.log('1' , projects);
 }
 function addProject(project) {
-    projects.push(project);
+
+       projects.push(project);
+    backend.setItem('projects', JSON.stringify(projects));
+    
+}
+
+function addChangedProject(project, i){
+    projects[i] = project;
     backend.setItem('projects', JSON.stringify(projects));
 }
 
@@ -31,10 +38,14 @@ function readProject(){
         'firstSubmission': firstSubmission.value
     }
     addProject(project);
+    renderProjects();
 }
+
+
 function renderProjects(){
     console.log('2 render Projekte');
    let mainContainer = document.getElementById('main');
+   mainContainer.innerHTML = '';
    for (let i = 0; i < projects.length; i++) {
     
     mainContainer.innerHTML += `
@@ -53,6 +64,7 @@ function renderProjects(){
         <div class="card-body">
           <a href="#" class="card-link">Card link</a>
           <a onclick="deleteProject(${i})" href="#" class="card-link">löschen</a>
+          <a onclick="changeProjectInfo(${i})" href="#" class="card-link">bearbeiten</a>
         </div>
       </div>
 </div>`;
@@ -79,7 +91,7 @@ function calculateDuration(i){
 }
 
 function delay(){
-    setTimeout(renderProjects, 300);
+    setTimeout(renderProjects, 1000);
 }
 function showInput(){
   
@@ -90,12 +102,62 @@ function showInput(){
     <form onsubmit="readProject()">
         <label for="title">Projektname</label>
         <input id="title" class="form-control form-control-sm" type="text" placeholder="Projektname" aria-label=".form-control-sm example" required>
-       
+        <input id="image" class="form-control form-control-sm" type="text" placeholder="Bildname" aria-label=".form-control-sm example" required>
         <input id="description" class="form-control form-control-sm" type="text" placeholder="Beschreibung" aria-label=".form-control-sm example" required>
         <input id="startDate" class="form-control form-control-sm" type="date" placeholder="Modulstart" aria-label=".form-control-sm example" required>
         <input id="firstSubmission" class="form-control form-control-sm" type="date" placeholder="Eingereicht am" aria-label=".form-control-sm example" required>
         <button>speichern</button>
         </form>
+       
     </div>
 </div>`;
+}
+
+
+function showInputForChange(i){
+  
+    let newContainer = document.getElementById('container');
+    newContainer.innerHTML = `
+<div id="newProject" class="container-fluit">
+    <div>
+    <form onsubmit="readProject()">
+        <label for="title">Projektname</label>
+        <input id="title" class="form-control form-control-sm" type="text" placeholder="Projektname" aria-label=".form-control-sm example" required>
+        <input id="image" class="form-control form-control-sm" type="text" placeholder="Bildname" aria-label=".form-control-sm example" required>
+        <input id="description" class="form-control form-control-sm" type="text" placeholder="Beschreibung" aria-label=".form-control-sm example" required>
+        <input id="startDate" class="form-control form-control-sm" type="date" placeholder="Modulstart" aria-label=".form-control-sm example" required>
+        <input id="firstSubmission" class="form-control form-control-sm" type="date" placeholder="Eingereicht am" aria-label=".form-control-sm example" required>
+        <button>speichern</button>
+        </form>
+        <button onclick="addChangedInfos(${i})">geänderte Daten speichern</button>
+    </div>
+</div>`;
+}
+
+function changeProjectInfo(i){
+    // showInput(i);
+    showInputForChange(i);
+    document.getElementById('title').value = projects[i].title;
+    document.getElementById('description').value = projects[i].description;
+    document.getElementById('image').value = projects[i].image;
+    document.getElementById('startDate').value = projects[i].startDate;
+    document.getElementById('firstSubmission').value = projects[i].firstSubmission;
+}
+
+
+function addChangedInfos(i){
+    console.log('geänderte Infos speichern');
+    title = document.getElementById('title');
+    description = document.getElementById('description');
+    startDate = document.getElementById('startDate');
+    firstSubmission = document.getElementById('firstSubmission');
+    project = {
+        'title' : title.value,
+        'description': description.value,
+        'image': image.value,
+        'startDate' : startDate.value,
+        'firstSubmission': firstSubmission.value
+    }
+    addChangedProject(project, i);
+    renderProjects();
 }
