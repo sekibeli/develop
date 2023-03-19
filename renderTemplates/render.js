@@ -50,7 +50,7 @@ function renderProjectsTemplate(projects, i){
           </ul>
           <div class="card-body">
             <a href="#" class="card-link">Card link</a>
-            <a onclick="deleteProject(${i})" href="#" class="card-link">löschen</a>
+            <a onclick="deleteItem(${i})" href="#" class="card-link">löschen</a>
             <a onclick="changeProjectInfo(${i})" href="#" class="card-link">bearbeiten</a>
           </div>
         </div>

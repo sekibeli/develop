@@ -26,6 +26,8 @@ function addProject(project) {
     backend.setItem('projects', JSON.stringify(projects));
 }
 
+
+
 /**
  *  Das geänderte Projekt wird wieder im Backend gespeichert
  * 
@@ -36,6 +38,9 @@ function addChangedProject(project, i) {
     projects[i] = project;
     backend.setItem('projects', JSON.stringify(projects));
 }
+
+
+
 /*
  * Ein neues Projekt wird in der JSON Variable "project" gespeichert
  *  Funktionsaufruf: neuer Wert wird im Array gespeichert
@@ -54,9 +59,11 @@ function readProject() {
         'startDate': startDate.value,
         'firstSubmission': firstSubmission.value
     }
-
     addProject(project);
+    title.value = ``;
+    description = ``;
     renderProjects();
+
 }
 
 
@@ -65,20 +72,26 @@ function renderProjects() {
     let mainContainer = document.getElementById('main');
     mainContainer.innerHTML = '';
     for (let i = 0; i < projects.length; i++) {
-
         mainContainer.innerHTML += renderProjectsTemplate(projects, i);
         calculateDuration(i);
-
     }
-
 }
 
 
-async function deleteProject(i) {
-    await backend.deleteItem('title');
-    await backend.deleteItem('description');
-    await backend.deleteItem('startDate');
-    await backend.deleteItem('firstSubmission');
+// async function deleteProject() {
+//     await backend.deleteItem('title');
+//     await backend.deleteItem('description');
+//     await backend.deleteItem('startDate');
+//     await backend.deleteItem('firstSubmission');
+// }
+
+
+function deleteItem(i){
+projects.splice(i, 1);
+renderProjects();
+backend.setItem('projects', JSON.stringify(projects));
+
+
 }
 
 function calculateDuration(i) {
@@ -91,7 +104,7 @@ function calculateDuration(i) {
 }
 
 function delay() {
-    setTimeout(renderProjects, 1000);
+    setTimeout(renderProjects, 100);
 }
 function showInput() {
 
@@ -134,5 +147,7 @@ function addChangedInfos(i) {
         'firstSubmission': firstSubmission.value
     }
     addChangedProject(project, i);
+    title.value = ``;
+    description = ``;
     renderProjects();
 }
